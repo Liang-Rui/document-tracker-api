@@ -11,7 +11,10 @@ class DocumentController extends Controller
     public function index(Request $request)
     {
         return DocumentResource::collection(
-            resource: Document::all()
+            request()->user()
+                ->documents()
+                ->orderBy('expires_at', 'asc')
+                ->get()
         );
     }
 
