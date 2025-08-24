@@ -20,14 +20,22 @@ class DocumentController extends Controller
 
     public function store(Request $request)
     {
-        $document = $request
-            ->user()
-            ->documents()
-            ->create(
-                $request->all()
-            );
+       $validated = $request->validate([
+            'document'   => ['required', 'file'],
+            'expires_at' => ['required', 'date'],
+        ]);
 
-        return DocumentResource::make($document);
+        $user = $request->user();
+        $file = $validated['document'];
+
+        $document = Document::create([
+            'name'       => $file->getClientOriginalName(),
+            'path'       => $file->store("documents"),
+            'owner_id'   => $user->id,
+            'expires_at' => $validated['expires_at'],
+        ]);
+
+        return new DocumentResource($document);
     }
 
     public function show(Document $document)
