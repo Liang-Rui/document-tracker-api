@@ -46,4 +46,20 @@ class DocumentController extends Controller
 
         return DocumentResource::make($document);
     }
+
+    public function archive(Document $document)
+    {
+        if ($document->owner_id !== request()->user()->id) {
+            abort(403, "Not found");
+        }
+
+        if ($document->archived_at) {
+            abort(409, "Document is already archived");
+        }
+
+        $document->archived_at = now();
+        $document->save();
+
+        return DocumentResource::make($document);
+    }
 }

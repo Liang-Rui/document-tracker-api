@@ -19,6 +19,7 @@ use Illuminate\Support\Carbon;
  * @property-read Carbon $expires_at
  * @property int $owner_id
  * @property Carbon|null $created_at
+ * @property Carbon|null $archived_at
  * @property Carbon|null $updated_at
  * @property-read User $owner
  *
@@ -27,6 +28,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Document query()
  * @method static Builder|Document whereCreatedAt($value)
  * @method static Builder|Document whereExpiresAt($value)
+ * @method static Builder|Document whereArchivedAt($value)
  * @method static Builder|Document whereId($value)
  * @method static Builder|Document whereName($value)
  * @method static Builder|Document whereOwnerId($value)
@@ -40,6 +42,7 @@ class Document extends Model
 
     protected $casts = [
         'expires_at' => 'datetime',
+        'archived_at' => 'datetime'
     ];
 
     public function owner(): BelongsTo
